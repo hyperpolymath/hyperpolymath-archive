@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-FileCopyrightText: 2025 Jonathan D.A. Jewell
+
+# Deno
+.deno/
+deno.lock
+
+# V build artifacts
+*.o
+*.so
+*.dylib
+*.dll
+*.a
+*.exe
+
+# Build output
+dist/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+.coverage/
+
+# Logs
+*.log
+logs/
+
+# V specific
+.v/
