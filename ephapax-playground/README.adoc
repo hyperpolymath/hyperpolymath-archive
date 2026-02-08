@@ -1,0 +1,142 @@
+= Ephapax Playground
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+
+
+
+
+image:https://img.shields.io/badge/Philosophy-Palimpsest-indigo.svg[Palimpsest,link="https://github.com/hyperpolymath/palimpsest-license"]
+
+
+:toc: macro
+:icons: font
+:source-highlighter: rouge
+
+// SPDX-License-Identifier: PMPL-1.0-or-later
+
+image:https://img.shields.io/badge/Language-Ephapax-orange[Ephapax]
+image:https://img.shields.io/badge/Types-Linear%20%2F%20Affine-purple[Linear/Affine]
+image:https://img.shields.io/badge/RSR-Certified-gold[RSR]
+
+*Playground for Ephapax - Linear Semantics and Once-Only Evaluation*
+
+toc::[]
+
+== Overview
+
+Ephapax (Greek: ἐφάπαξ, "once for all") is a language with linear type semantics, ensuring resources are used exactly once. It supports both linear and affine type modes.
+
+=== Type System Modes
+
+[cols="1,2,2"]
+|===
+| Mode | Resource Usage | Compile Behavior
+
+| **Linear**
+| Exactly once
+| Error if unused
+
+| **Affine**
+| At most once
+| Warning if unused (auto-drop)
+|===
+
+== Mode Toggle
+
+[source,ephapax]
+----
+-- Set mode at module level
+#![type_mode = "linear"]  -- or "affine"
+
+-- Or via CLI
+-- ephapax build --mode=linear program.epx
+-- ephapax build --mode=affine program.epx
+----
+
+== Linear Types
+
+[source,ephapax]
+----
+-- Resource must be used exactly once
+type File = linear {
+    handle: FileHandle,
+    path: String,
+}
+
+fn process_file(file: File) -> ():
+    let content = file.read()
+    print(content)
+    file.close()  -- Must close (linear requirement)
+
+-- ERROR in linear mode:
+fn bad_example():
+    let f = open("data.txt")
+    -- f dropped without use = compile error
+----
+
+== Affine Types
+
+[source,ephapax]
+----
+#![type_mode = "affine"]
+
+-- Resource can be used at most once
+fn affine_example():
+    let f = open("data.txt")
+    -- f auto-dropped with warning (not error)
+----
+
+== Region-Based Memory
+
+[source,ephapax]
+----
+fn process_data() -> Result:
+    region r:
+        let buffer = Vec.new@r(1024)
+        let parsed = parse@r(input)
+        let result = transform@r(parsed)
+        result  -- Escapes region, rest deallocated
+----
+
+== Ownership Transfer
+
+[source,ephapax]
+----
+let a = create_resource()
+let b = a  -- a consumed, b owns resource
+-- print(a)  -- ERROR: a already moved
+
+-- Borrows for temporary access
+fn inspect(res: &Resource) -> Info:
+    res.get_info()
+
+let c = create_resource()
+let info = inspect(&c)  -- Borrow
+c.consume()  -- Still valid
+----
+
+== Getting Started
+
+[source,bash]
+----
+# Install
+guix install ephapax
+
+# Compile
+ephapax build --mode=linear hello.epx
+./hello
+----
+
+== Examples
+
+* `examples/linear/` - Linear type examples
+* `examples/affine/` - Affine type examples
+* `examples/regions/` - Region-based allocation
+* `examples/patterns/` - Design patterns for linear types
+
+== Related
+
+* **AffineScript** - Sibling language for affine types + WASM
+
+== License
+
+SPDX-License-Identifier: PMPL-1.0-or-later-or-later

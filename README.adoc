@@ -1,0 +1,51 @@
+= Hyperpolymath Archive
+// SPDX-License-Identifier: PMPL-1.0-or-later
+
+Archive of repositories that have been consolidated into monorepos.
+Each subdirectory preserves the final state of an absorbed repository.
+
+== Consolidated Into
+
+[cols="1,1", options="header"]
+|===
+|Subdirectory |Now Part Of
+
+|avow-telegram-bot |avow-protocol
+|betlang-playground |betlang
+|cadre-tea-router |cadre-router
+|ephapax-playground |ephapax
+|flatracoon-netstack |flatracoon
+|flatracoon-os |flatracoon
+|fslint-plugin-api |filesoup
+|fslint-plugin-sdk |filesoup
+|idris2-cno |idris2-ecosystem
+|idris2-dyadt |idris2-ecosystem
+|idris2-echidna |idris2-ecosystem
+|idris2-xml-7-44-toolkit |idris2-ecosystem
+|nickel-augmented |nickel-augmentation
+|nickel-config-reporter |nickel-augmentation
+|verisimdb-debugger |verisimdb
+|verisim-practice-mirror |verisimdb
+|ambientops-composer |ambientops
+|ambientops-observatory |ambientops
+|file-soup |filesoup
+|zoterho |zotero-tools
+|zoterho-template |zotero-tools
+|zotero-formbd |zotero-tools
+|zotero-librarian |zotero-tools
+|zotero-nesy |zotero-tools
+|zotero-rescript-templater |zotero-tools
+|zotero-safe-storage |zotero-tools
+|zotero-voyant-export |zotero-tools
+|zotpress |zotero-tools
+|wordpress-secured |wordpress-tools
+|wp-plugin-conflict-mapper |wordpress-tools
+|wp-praxis |wordpress-tools
+|wp-resurrect |wordpress-tools
+|wp-sinople-theme |wordpress-tools
+|sinople-journal-theme |wordpress-tools
+|===
+
+== License
+
+PMPL-1.0-or-later

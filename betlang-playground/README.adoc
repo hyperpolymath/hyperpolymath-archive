@@ -1,0 +1,74 @@
+= BetLang Playground
+
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+image:https://img.shields.io/badge/Philosophy-Palimpsest-indigo.svg[Palimpsest,link="https://github.com/hyperpolymath/palimpsest-license"]
+
+
+:toc: macro
+:icons: font
+
+// SPDX-License-Identifier: PMPL-1.0-or-later
+
+image:https://img.shields.io/badge/Language-BetLang-red[BetLang]
+
+*Playground for BetLang - Foundational Experimental Language*
+
+toc::[]
+
+== Overview
+
+BetLang is the foundational experimental language for the Next-Gen Languages initiative. It serves as a testbed for language features before they're incorporated into production languages.
+
+=== Key Features
+
+* **Experimental Syntax**: Try new language constructs
+* **Feature Flags**: Enable/disable experimental features
+* **Rapid Iteration**: Fast compile-test cycles
+* **Research Focus**: Academic language research
+
+== Language Design
+
+=== Feature Flags
+
+[source,betlang]
+----
+#![feature(linear_types)]
+#![feature(dependent_types)]
+#![feature(effect_system)]
+
+-- Use experimental features
+fn example() -> ():
+    @linear let resource = acquire()
+    use(resource)
+----
+
+=== Experimental Syntax
+
+[source,betlang]
+----
+-- Try different syntaxes
+syntax_variant A:
+    let x = 5
+
+syntax_variant B:
+    x := 5
+
+-- Compare and evaluate
+----
+
+== Getting Started
+
+[source,bash]
+----
+guix install betlang
+betlang run experiment.bet
+----
+
+== Examples
+
+* `experiments/` - Various language experiments
+* `proposals/` - Feature proposals and prototypes
+
+== License
+
+SPDX-License-Identifier: PMPL-1.0-or-later-or-later

@@ -1,0 +1,235 @@
+image:https://img.shields.io/badge/License-PMPL--1.0-blue.svg[License: PMPL-1.0,link="https://github.com/hyperpolymath/palimpsest-license"]
+// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-FileCopyrightText: 2025 Hyperpolymath <hyperpolymath@proton.me>
+= flatracoon-os
+
+
+
+
+:icons: font
+:toc: left
+:toclevels: 3
+
+== Purpose
+
+Minix–Flatcar hybrid OS prototype for immutable, microkernel-driven container hosting.
+
+FlatRacoon OS combines the reliability principles of Minix's microkernel architecture with Flatcar Container Linux's immutable infrastructure approach.
+
+Part of the link:https://github.com/hyperpolymath/flatracoon-netstack[FlatRacoon Network Stack].
+
+== Architecture
+
+[source]
+----
+┌─────────────────────────────────────────────────────────────┐
+│                     User Space                               │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐  │
+│  │  Containers │  │  ZeroTier   │  │  FlatRacoon Stack   │  │
+│  │  (podman)   │  │   Agent     │  │  Services           │  │
+│  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘  │
+│         │                │                    │              │
+│  ┌──────▼────────────────▼────────────────────▼──────────┐  │
+│  │              System Services (isolated)                │  │
+│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐   │  │
+│  │  │ Network │  │ Storage │  │ Process │  │ Update  │   │  │
+│  │  │ Server  │  │ Server  │  │ Server  │  │ Server  │   │  │
+│  │  └────┬────┘  └────┬────┘  └────┬────┘  └────┬────┘   │  │
+│  └───────┼────────────┼────────────┼────────────┼────────┘  │
+└──────────┼────────────┼────────────┼────────────┼───────────┘
+           │            │            │            │
+┌──────────▼────────────▼────────────▼────────────▼───────────┐
+│                   Microkernel (Minix-inspired)               │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │  IPC  │  Scheduling  │  Memory  │  Capability Gates │    │
+│  └─────────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────┘
+                              │
+┌─────────────────────────────▼───────────────────────────────┐
+│                        Hardware                              │
+└─────────────────────────────────────────────────────────────┘
+----
+
+== Design Principles
+
+=== From Minix
+
+* **Microkernel architecture** - Minimal kernel, services in userspace
+* **Fault isolation** - Driver crashes don't bring down system
+* **Self-healing** - Automatic service restart
+* **Capability-based security** - Fine-grained permissions
+
+=== From Flatcar
+
+* **Immutable root filesystem** - Read-only `/` partition
+* **Atomic updates** - A/B partition scheme
+* **Container-first** - Optimized for container workloads
+* **Minimal attack surface** - No package manager, no shell by default
+
+== Components
+
+* **Microkernel** - Minix-inspired minimal kernel
+* **System servers** - Network, storage, process management
+* **Container runtime** - Podman with rootless support
+* **Update system** - OSTree-based atomic updates
+* **Network stack** - ZeroTier and IPv6-native
+
+== Directory Structure
+
+[source]
+----
+flatracoon-os/
+├── kernel/
+│   ├── src/                   # Microkernel source (Rust/Ada)
+│   ├── ipc/                   # Inter-process communication
+│   └── capability/            # Capability system
+├── servers/
+│   ├── network/               # Network server
+│   ├── storage/               # Storage server
+│   ├── process/               # Process server
+│   └── update/                # Update server
+├── userland/
+│   ├── init/                  # Init system
+│   ├── container-runtime/     # Podman integration
+│   └── flatracoon-agent/      # Stack integration agent
+├── images/
+│   ├── Containerfile.base     # Base image build
+│   ├── Containerfile.dev      # Development image
+│   └── scripts/
+├── configs/
+│   ├── kernel.ncl             # Kernel configuration
+│   ├── servers.ncl            # Server settings
+│   └── update.ncl             # Update policy
+├── Justfile
+├── README.adoc
+├── STATE.scm
+├── META.scm
+└── ECOSYSTEM.scm
+----
+
+== Inputs
+
+[cols="1,2,1"]
+|===
+| Input | Description | Source
+
+| Base image
+| Flatcar Container Linux base
+| Flatcar upstream
+
+| Kernel config
+| Microkernel build settings
+| configs/kernel.ncl
+
+| Server configs
+| System server parameters
+| configs/servers.ncl
+
+| Update channel
+| Stable/beta/alpha
+| configs/update.ncl
+|===
+
+== Outputs
+
+[cols="1,2"]
+|===
+| Output | Description
+
+| Bootable OS image
+| FlatRacoon OS installer/image
+
+| OCI base image
+| Container base for stack services
+
+| VM template
+| QEMU/KVM/libvirt template
+
+| Cloud images
+| AWS AMI, GCP image, Azure VHD
+|===
+
+== Integration Points
+
+=== With FlatRacoon Stack
+
+* **All modules** - Native deployment target
+* **zerotier-k8s-link** - ZeroTier agent built-in
+* **ipfs-overlay** - IPFS daemon as system server
+* **ipv6-site-enforcer** - IPv6-only networking default
+
+=== Machine-Readable Manifest
+
+[source,json]
+----
+{
+  "module": "flatracoon-os",
+  "version": "0.1.0",
+  "layer": "platform",
+  "requires": [],
+  "provides": ["immutable-os", "microkernel", "container-runtime"],
+  "config_schema": "configs/schema.ncl",
+  "health_endpoint": "n/a",
+  "metrics_endpoint": "n/a"
+}
+----
+
+== Quick Start
+
+[source,bash]
+----
+# 1. Build development image
+just build-dev
+
+# 2. Run in QEMU
+just run-qemu
+
+# 3. SSH into instance
+just ssh
+
+# 4. Build production image
+just build-prod
+----
+
+== Comparison
+
+[cols="1,1,1,1"]
+|===
+| Feature | FlatRacoon | Flatcar | Minix
+
+| Architecture
+| Microkernel
+| Monolithic
+| Microkernel
+
+| Immutability
+| Yes
+| Yes
+| No
+
+| Container-native
+| Yes
+| Yes
+| No
+
+| Self-healing
+| Yes
+| Partial
+| Yes
+
+| Fault isolation
+| Full
+| Partial
+| Full
+|===
+
+== Status
+
+[horizontal]
+Phase:: Research/Prototype
+Completion:: 2%
+Next:: Kernel architecture design document
+
+== License
+
+PMPL-1.0-or-later

@@ -1,0 +1,150 @@
+= XML 7/44 Toolkit
+:toc:
+:toclevels: 2
+
+Type-safe XML infiltration and exfiltration for Idris2.
+
+== The Name
+
+On January 6, 2026, while injecting Word comments into DOCX files,
+a SAXParseException occurred:
+
+----
+SAXParseException: '[word/comments.xml line 7]: xmlParseEntityRef: no name',
+Stream 'word/comments.xml', Line 7, Column 44
+----
+
+The cause? An unescaped `&` in the text "Barr & Hayne".
+
+This toolkit ensures that error can never happen again.
+
+== The Problem
+
+XML has several characters that must be escaped:
+
+[cols="1,1,1"]
+|===
+| Character | Raw | Escaped
+
+| Ampersand | `&` | `&amp;`
+| Less than | `<` | `&lt;`
+| Greater than | `>` | `&gt;`
+| Quote | `"` | `&quot;`
+| Apostrophe | `'` | `&apos;`
+|===
+
+Forgetting to escape these causes:
+
+* Parse errors (the XML is rejected)
+* Data corruption (content is misinterpreted)
+* Security vulnerabilities (XML injection)
+
+The errors are **silent at creation time** and **explosive at parse time**.
+
+== The Solution
+
+Use Idris2's type system to make invalid XML unrepresentable:
+
+[source,idris]
+----
+import Xml744.Core
+
+-- WRONG: This would cause a 7/44 error
+-- "<w:t>Barr & Hayne</w:t>"
+
+-- RIGHT: Use the toolkit
+comment : XmlNode
+comment = wText "Barr & Hayne"
+-- Renders as: <w:r><w:t>Barr &amp; Hayne</w:t></w:r>
+----
+
+The `&` is automatically escaped. The error is impossible by construction.
+
+== API Overview
+
+=== Infiltration (getting data INTO XML)
+
+[source,idris]
+----
+-- Escape a string for XML text content
+infiltrate : String -> String
+infiltrate "Barr & Hayne" == "Barr &amp; Hayne"
+
+-- Escape a string for XML attributes (also escapes quotes)
+infiltrateAttr : String -> String
+infiltrateAttr "say \"hello\"" == "say &quot;hello&quot;"
+
+-- Create safe XML text
+text : String -> XmlText
+txt : String -> XmlNode
+----
+
+=== Exfiltration (getting data OUT OF XML)
+
+[source,idris]
+----
+-- Unescape XML entities back to raw text
+exfiltrate : String -> String
+exfiltrate "Barr &amp; Hayne" == "Barr & Hayne"
+
+-- Get raw content from XmlText
+fromXml : XmlText -> String
+----
+
+=== Building Elements
+
+[source,idris]
+----
+-- Create elements
+el : String -> List XmlAttr -> List XmlNode -> XmlNode
+
+-- Create self-closing elements
+emptyEl : String -> List XmlAttr -> XmlNode
+
+-- OOXML (Word) specific helpers
+wEl : String -> List XmlAttr -> List XmlNode -> XmlNode
+wText : String -> XmlNode
+wCommentStart : String -> XmlNode
+wCommentEnd : String -> XmlNode
+wCommentRef : String -> XmlNode
+----
+
+=== Word Comments
+
+[source,idris]
+----
+-- Build a complete Word comment (text auto-escaped!)
+wordComment : (id : String)
+           -> (author : String)
+           -> (date : String)
+           -> (initials : String)
+           -> (commentText : String)
+           -> XmlNode
+
+-- Build a comments.xml document
+wordCommentsDoc : List XmlNode -> XmlDocument
+----
+
+== Installation
+
+[source,bash]
+----
+cd your-project
+idris2 --install path/to/xml-7-44.ipkg
+----
+
+Then in your `.ipkg`:
+
+[source]
+----
+depends = xml-7-44
+----
+
+== Dedication
+
+To Tim Bray, Jean Paoli, C. M. Sperberg-McQueen, and Eve Maler,
+who gave us XML and then presumably changed their phone numbers.
+
+== License
+
+MIT
