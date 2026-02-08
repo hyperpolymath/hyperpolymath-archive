@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+= hyperpolymath-archive Roadmap
+
+== Current State (2026-02-08)
+
+Archived repos preserved from consolidation
+
+Completion: 100%
+
+== Short-term Goals (Q1 2026)
+
+* [ ] Complete core functionality for all components
+* [ ] Add test coverage
+* [ ] Write user documentation
+
+== Medium-term Goals (Q2 2026)
+
+* [ ] Reach MVP status
+* [ ] Security audit
+* [ ] Performance optimization
+
+== Long-term Goals (H2 2026)
+
+* [ ] Stable 1.0 release
+* [ ] Community engagement
+* [ ] Ecosystem integration
+
+== Components
+
+See link:.machine_readable/STATE.scm[] for component status.

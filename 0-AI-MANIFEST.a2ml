@@ -1,0 +1,33 @@
+# 0-AI-MANIFEST.a2ml
+# SPDX-License-Identifier: PMPL-1.0-or-later
+
+@manifest {
+  version: "1.0.0"
+  repo: "hyperpolymath/hyperpolymath-archive"
+  updated: "2026-02-08"
+}
+
+@canonical-locations {
+  scm-files: ".machine_readable/"
+  docs: "docs/"
+  ci-cd: ".github/workflows/"
+}
+
+@critical-invariants {
+  rule: "SCM files MUST be in .machine_readable/ ONLY"
+  rule: "Never create STATE.scm, META.scm, ECOSYSTEM.scm in repository root"
+  rule: "All code under PMPL-1.0-or-later license"
+  rule: "Follow RSR (Responsible Software Repository) standard"
+}
+
+@structure {
+  entry-point: "README.adoc"
+  state-file: ".machine_readable/STATE.scm"
+  ecosystem-file: ".machine_readable/ECOSYSTEM.scm"
+  meta-file: ".machine_readable/META.scm"
+}
+
+@lifecycle {
+  on-enter: "Read this manifest first, then SCM files"
+  on-exit: "Update STATE.scm with session changes"
+}

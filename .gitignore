@@ -1,9 +1,72 @@
-# Build artifacts
-node_modules/
-target/
+
+*~
+# Ada/SPARK
+*.ali
+*.bak
+/bin/
+bot.log
+/.bsb.lock
+/_build/
+/build/
 _build/
+# Build
+# Build artifacts
+# Cargo.lock  # Keep for binaries
+# Chapel
+*.chpl.tmp.*
+/cover/
+/coverage/
+# Dependencies
+/deps/
 deps/
+/dist/
+/dist-newstyle/
+/doc/
+.DS_Store
+# Elixir
+/.elixir_ls/
+.env
+.env.*
+erl_crash.dump
+*.ez
+# Haskell
+htmlcov/
+.idea/
+*.jl.cov
+*.jl.mem
+# Julia
+*.key
+/lib/bs/
+*.log
+/logs/
+# Logs
+/Manifest.toml
+/node_modules/
+node_modules/
+/obj/
+# OS & Editor
+/out/
+*.pem
 *.pyc
 __pycache__/
-.env
-bot.log
+*.py[cod]
+# Python (SaltStack only)
+# ReScript
+# RSR-compliant .gitignore
+# Rust
+secrets/
+# Secrets
+# SPDX-License-Identifier: AGPL-3.0-or-later
+/.stack-work/
+*.swo
+*.swp
+/target/
+target/
+# Temp
+# Test/Coverage
+Thumbs.db
+*.tmp
+/tmp/
+/vendor/
+.venv/
+.vscode/
