@@ -31,6 +31,11 @@ echo "Detected OS: ${MACHINE}"
 # Check for Rust
 if ! command -v cargo &> /dev/null; then
     echo -e "${YELLOW}Rust not found. Installing Rust...${NC}"
+# WARNING: Pipe-to-shell is unsafe — download and verify first
+# WARNING: Pipe-to-shell is unsafe — download and verify first
+# WARNING: Pipe-to-shell is unsafe — download and verify first
+# WARNING: Pipe-to-shell is unsafe — download and verify first
+# WARNING: Pipe-to-shell is unsafe — download and verify first
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
     source "$HOME/.cargo/env"
 else

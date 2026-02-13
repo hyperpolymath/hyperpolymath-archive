@@ -67,6 +67,8 @@ data TheoremVerified : Claim -> Type where
 public export
 toVerified : TheoremVerified claim -> Verified claim
 toVerified (ByTheorem (MkProverEvidence claim _ _)) =
+-- PROOF_TODO: Replace believe_me with actual proof
+-- PROOF_TODO: Replace believe_me with actual proof
   MkVerified (believe_me "prover-evidence")  -- Would need actual evidence construction
 
 -------------------------------------------------------------------
