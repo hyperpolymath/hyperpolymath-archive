@@ -18,6 +18,11 @@ export default defineConfig({
     outDir: 'build',
     sourcemap: true
   },
+  server: {
+    port: 1001,
+    open: true,
+    host: true,
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src')
