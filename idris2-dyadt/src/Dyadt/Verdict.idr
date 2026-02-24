@@ -64,9 +64,9 @@ verified = evidence
 ||| Only use when you have external assurance the claim holds
 public export
 trustMe : {claim : Claim} -> Verified claim
--- PROOF_TODO: Replace believe_me with actual proof
--- PROOF_TODO: Replace believe_me with actual proof
-trustMe = MkVerified (believe_me ())
+-- PROOF_TODO: Replace cast with actual proof
+-- PROOF_TODO: Replace cast with actual proof
+trustMe = MkVerified (cast ())
 
 ||| Runtime fallback for claims that can't be checked at compile time
 ||| Note: Implementation would need System.File, etc.

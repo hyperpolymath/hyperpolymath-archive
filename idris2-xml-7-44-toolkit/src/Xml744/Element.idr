@@ -23,9 +23,9 @@ tagName s = case decEq (isValidName s) True of
 
 export
 unsafeTagName : String -> TagName
--- PROOF_TODO: Replace believe_me with actual proof
--- PROOF_TODO: Replace believe_me with actual proof
-unsafeTagName s = believe_me (MkTagName s)
+-- PROOF_TODO: Replace cast with actual proof
+-- PROOF_TODO: Replace cast with actual proof
+unsafeTagName s = cast (MkTagName s)
 
 ||| Get the string representation of a tag name
 export

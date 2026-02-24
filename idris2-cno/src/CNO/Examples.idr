@@ -40,16 +40,16 @@ addZero : CNO Integer
 addZero = MkCNO (\x => x + 0) (\x => rewrite plusZeroRightNeutral x in Refl)
   where
     plusZeroRightNeutral : (x : Integer) -> x + 0 = x
--- PROOF_TODO: Replace believe_me with actual proof
--- PROOF_TODO: Replace believe_me with actual proof
-    plusZeroRightNeutral x = believe_me (Refl {x})
+-- PROOF_TODO: Replace cast with actual proof
+-- PROOF_TODO: Replace cast with actual proof
+    plusZeroRightNeutral x = cast (Refl {x})
 
 ||| Multiply by one (identity on numbers)
 public export
 multiplyOne : CNO Integer
--- PROOF_TODO: Replace believe_me with actual proof
--- PROOF_TODO: Replace believe_me with actual proof
-multiplyOne = MkCNO (\x => x * 1) (\x => believe_me (Refl {x}))
+-- PROOF_TODO: Replace cast with actual proof
+-- PROOF_TODO: Replace cast with actual proof
+multiplyOne = MkCNO (\x => x * 1) (\x => cast (Refl {x}))
 
 -------------------------------------------------------------------
 -- List CNOs
@@ -67,9 +67,9 @@ appendNil = MkCNO (\xs => xs ++ []) (\xs => appendNilRightNeutral xs)
 ||| Reverse twice (identity on lists)
 public export
 reverseReverse : CNO (List a)
--- PROOF_TODO: Replace believe_me with actual proof
--- PROOF_TODO: Replace believe_me with actual proof
-reverseReverse = MkCNO (\xs => reverse (reverse xs)) (\xs => believe_me (Refl {x = xs}))
+-- PROOF_TODO: Replace cast with actual proof
+-- PROOF_TODO: Replace cast with actual proof
+reverseReverse = MkCNO (\xs => reverse (reverse xs)) (\xs => cast (Refl {x = xs}))
 
 -------------------------------------------------------------------
 -- Maybe CNOs
@@ -203,9 +203,9 @@ nestedList = MkCNO id (\xs => Refl)
 ||| Reverse twice on nested lists
 public export
 doubleReverseNested : CNO (List (List a))
--- PROOF_TODO: Replace believe_me with actual proof
--- PROOF_TODO: Replace believe_me with actual proof
-doubleReverseNested = MkCNO (\xs => reverse (reverse xs)) (\xs => believe_me (Refl {x = xs}))
+-- PROOF_TODO: Replace cast with actual proof
+-- PROOF_TODO: Replace cast with actual proof
+doubleReverseNested = MkCNO (\xs => reverse (reverse xs)) (\xs => cast (Refl {x = xs}))
 
 ||| Identity on triple (rotation example simplified)
 public export

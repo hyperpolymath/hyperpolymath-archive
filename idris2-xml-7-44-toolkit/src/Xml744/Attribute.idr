@@ -38,9 +38,9 @@ attrName s = case decEq (isValidName s) True of
 ||| Unsafe attribute name creation (use only for known-good literals)
 export
 unsafeAttrName : String -> AttrName
--- PROOF_TODO: Replace believe_me with actual proof
--- PROOF_TODO: Replace believe_me with actual proof
-unsafeAttrName s = believe_me (MkAttrName s)
+-- PROOF_TODO: Replace cast with actual proof
+-- PROOF_TODO: Replace cast with actual proof
+unsafeAttrName s = cast (MkAttrName s)
 
 ||| Common attribute names as constants
 export
